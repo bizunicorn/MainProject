@@ -15,6 +15,7 @@ import java.util.Locale;
             mCalendar = Calendar.getInstance();
         }
 
+        //a
         //当月の要素を取得
         public List<Date> getDays(){
 
