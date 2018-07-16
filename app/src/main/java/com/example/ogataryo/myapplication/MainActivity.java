@@ -1,8 +1,11 @@
 package com.example.ogataryo.myapplication;
 
 
+import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ListActivity;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +14,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ArrayAdapter;
@@ -25,6 +30,7 @@ import android.view.View.OnClickListener;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.Calendar;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -40,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         //menu.xmlの内容を読み込む
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
+        inflater.inflate( R.menu.menu, menu );
         return true;
     }
 
@@ -59,70 +65,78 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.item3:
                 /// 画面遷移3
-                Uri uri = Uri.parse("http://v6391.vir.kagoya.net/axis/login/login/main");
-                Intent i = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(i);
+                Uri uri = Uri.parse( "http://v6391.vir.kagoya.net/axis/login/login/main" );
+                Intent i = new Intent( Intent.ACTION_VIEW, uri );
+                startActivity( i );
                 return true;
 
             case R.id.item4:
                 // 画面遷移4
                 return true;
         }
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected( item );
     }
 
+    //ボタンを押下したときに呼び出される
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        titleText = findViewById(R.id.titleText);
+        super.onCreate( savedInstanceState );
+        setContentView( R.layout.activity_main );
+        titleText = findViewById( R.id.titleText );
 
         //前月
-        prevButton = findViewById(R.id.prevButton);
-        prevButton.setOnClickListener(new View.OnClickListener() {
+        prevButton = findViewById( R.id.prevButton );
+        prevButton.setOnClickListener( new OnClickListener() {
 
             @Override
             //クリック後
             public void onClick(View v) {
                 mCalendarAdapter.prevMonth();
-                titleText.setText(mCalendarAdapter.getTitle());
+                titleText.setText( mCalendarAdapter.getTitle() );
             }
-        });
+        } );
 
         //翌月
-        nextButton = findViewById(R.id.nextButton);
-        nextButton.setOnClickListener(new View.OnClickListener() {
+        nextButton = findViewById( R.id.nextButton );
+        nextButton.setOnClickListener( new OnClickListener() {
 
             @Override
             //クリック後
             public void onClick(View v) {
                 mCalendarAdapter.nextMonth();
-                titleText.setText(mCalendarAdapter.getTitle());
+                titleText.setText( mCalendarAdapter.getTitle() );
+                //findViewById(R.id.datePicker1);
             }
-        });
+        } );
 
         //コンストラクタ
-        mCalendarAdapter = new CalendarAdapter(this);
+        mCalendarAdapter = new CalendarAdapter( this );
 
         // 要素の取得
-        calendarGridView = findViewById(R.id.calendarGridView);
+        calendarGridView = findViewById( R.id.calendarGridView );
 
         //リストに表示されるデータを登録
-        calendarGridView.setAdapter(mCalendarAdapter);
+        calendarGridView.setAdapter( mCalendarAdapter );
 
         //年月を表示
-        titleText.setText(mCalendarAdapter.getTitle());
+        titleText.setText( mCalendarAdapter.getTitle() );
+
 
         //カレンダーセルをクリックした時に呼び出されるメソッド
-        calendarGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        calendarGridView.setOnItemClickListener( new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String str;
-                str  = String.valueOf( mCalendarAdapter.getItemId( i ) );
-                Toast.makeText(MainActivity.this, "クリックされました！" + str, Toast.LENGTH_LONG).show();
-             }
-        });
-
+                str = String.valueOf( mCalendarAdapter.getItemId( i ) );
+                Toast.makeText( MainActivity.this, "クリックされました！" + str, Toast.LENGTH_LONG ).show();
+            }
+        } );
     }
 }
-
+/*
+  DatePickerDialog.OnDateSetListener DateSetListener = new DatePickerDialog.OnDateSetListener() {
+      public void onDateSet(android.widget.DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
+          LinearLayout datePickerLayout = (LinearLayout) datePicker.getChildAt( 0 );
+          datePickerLayout.getChildAt( 2 ).setVisibility( View.GONE );
+      }
+  }*/

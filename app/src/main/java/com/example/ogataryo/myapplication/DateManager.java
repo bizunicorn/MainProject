@@ -1,21 +1,26 @@
 package com.example.ogataryo.myapplication;
 
-import java.text.SimpleDateFormat;
+import android.provider.ContactsContract;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
-    public class DateManager {
+public class DateManager {
         Calendar mCalendar;
+        Calendar mTodayCalendar;
 
         public DateManager(){
+            TimeZone jst = TimeZone.getTimeZone("Asia/Tokyo");
             mCalendar = Calendar.getInstance();
+            mTodayCalendar = Calendar.getInstance();
+            mCalendar.setTimeZone(jst);
+            mTodayCalendar.setTimeZone(jst);
         }
-
-        //a
         //当月の要素を取得
         public List<Date> getDays(){
 
@@ -51,12 +56,12 @@ import java.util.Locale;
             return days;
         }
 
-        //当月かどうか確認 "sun Apr 01 18:00....
+        //当月かどうか確認
         public boolean isCurrentMonth(Date date){
 
             //当月を格納
-            SimpleDateFormat format = new SimpleDateFormat("yyyy.MM", Locale.US);
-            //表示月 2018.04
+            SimpleDateFormat format = new SimpleDateFormat("yyyy.MM", Locale.JAPAN);
+            format.setTimeZone(TimeZone.getTimeZone( "Asia/Tokyo" ));
             String currentMonth = format.format(mCalendar.getTime());
 
             //当月どうか比較
@@ -77,7 +82,9 @@ import java.util.Locale;
         //曜日を取得
         public int getDayOfWeek(Date date) {
             Calendar calendar = Calendar.getInstance();
+            calendar.setTimeZone(TimeZone.getTimeZone("Asia/Tokyo"));
             calendar.setTime(date);
+
             return calendar.get(Calendar.DAY_OF_WEEK);
         }
 
@@ -92,15 +99,16 @@ import java.util.Locale;
         }
 
         //当日
- /*       public boolean isToday(Date date) {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd", Locale.US);
-            String today = format.format(mCalendar.getTime());
+        public boolean isToday(Date date) {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd", Locale.JAPAN);
+            format.setTimeZone(TimeZone.getTimeZone( "Asia/Tokyo" ));
+            String today = format.format(mTodayCalendar.getTime());
+
             if (today.equals(format.format(date))) {
                 return true;
             }else {
                 return false;
             }
-        }*/
-
+        }
 
     }
